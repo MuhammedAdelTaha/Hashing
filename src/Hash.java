@@ -18,31 +18,6 @@ public class Hash {
     }
 
     /**
-     * For debugging
-     * */
-    public void print(){
-        System.out.println("n = " + n);
-        System.out.println("m = " + m);
-        System.out.println("number of hash functions = " + hashFunctions.size());
-        System.out.println("hash table size = " + hashTable.size());
-//        System.out.println("hash table : " + hashTable);
-//        System.out.println("hash functions : ");
-//        for (byte[][] hashFunction : hashFunctions){
-//            int s2 = hashFunction[0].length;
-//            for (byte[] bytes : hashFunction) {
-//                System.out.print('[');
-//                for (int j = 0; j < s2; j++) {
-//                    System.out.print(bytes[j]);
-//                    if (j != s2 - 1) System.out.print(' ');
-//                }
-//                System.out.println(']');
-//            }
-//            System.out.println("----------------------------------------");
-//        }
-//        System.out.println("----------------------------------------");
-//        System.out.println("inserted keys : " + insertedKeys);
-    }
-    /**
      * Log to the base 2
      * */
     private int lg(int num){
