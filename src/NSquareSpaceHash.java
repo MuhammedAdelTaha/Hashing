@@ -2,21 +2,48 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Hash {
+public class NSquareSpaceHash {
     //The number of inserted keys
     private int n = 0;
     //The size of the hash table
     private int m = 2;
     //The inserted keys
     private ArrayList<Integer> insertedKeys = new ArrayList<>();
+    //The deleted keys
+    private ArrayList<Integer> deletedKeys = new ArrayList<>();
     //The hash table
     private final ArrayList<Integer> hashTable = new ArrayList<>();
     //Array list of hash functions used in insertions (storing them for search purpose)
     private final ArrayList<byte[][]> hashFunctions = new ArrayList<>();
-    public Hash(){
-        setHashTable();
+    public NSquareSpaceHash(){
+        resetHashTable();
     }
 
+    /**
+     * For debugging
+     * */
+    public void print(){
+        System.out.println("n = " + n);
+        System.out.println("m = " + m);
+        System.out.println("number of hash functions = " + hashFunctions.size());
+        System.out.println("hash table size = " + hashTable.size());
+//        System.out.println("hash table : " + hashTable);
+//        System.out.println("hash functions : ");
+//        for (byte[][] hashFunction : hashFunctions){
+//            int s2 = hashFunction[0].length;
+//            for (byte[] bytes : hashFunction) {
+//                System.out.print('[');
+//                for (int j = 0; j < s2; j++) {
+//                    System.out.print(bytes[j]);
+//                    if (j != s2 - 1) System.out.print(' ');
+//                }
+//                System.out.println(']');
+//            }
+//            System.out.println("----------------------------------------");
+//        }
+//        System.out.println("----------------------------------------");
+//        System.out.println("inserted keys : " + insertedKeys);
+    }
     /**
      * Log to the base 2
      * */
@@ -26,7 +53,7 @@ public class Hash {
     /**
      * Set the initial values of the hash table to be null
      * */
-    private void setHashTable(){
+    private void resetHashTable(){
         hashTable.clear();
         for (int i = 0; i < m; i++){
             hashTable.add(i, null);
@@ -102,8 +129,9 @@ public class Hash {
      * */
     private void rehash(){
         hashFunctions.clear();
-        setHashTable();
+        resetHashTable();
         for (int key : insertedKeys){
+            if (deletedKeys.contains(key)) continue;
             updateTables(key);
         }
     }
@@ -119,11 +147,26 @@ public class Hash {
         rehash();
     }
     /**
+     * Takes an array list of elements and a key to be deleted from this list and returns the list after deletion
+     * */
+    private ArrayList<Integer> remove(ArrayList<Integer> elements, int key){
+        ArrayList<Integer> copy = new ArrayList<>();
+        for (Integer element : elements) {
+            if (element == key) continue;
+            copy.add(element);
+        }
+        return (ArrayList<Integer>) copy.clone();
+    }
+    /**
      * takes a key and inserts it in the hash table
      * */
     public boolean insert(int key){
         if(this.search(key).getKey()) return false;
         n++;
+        if (deletedKeys.contains(key)) {
+            deletedKeys = remove(deletedKeys, key);
+            insertedKeys = remove(insertedKeys, key);
+        }
         insertedKeys.add(key);
         if(n > m){
             grow();
@@ -134,39 +177,18 @@ public class Hash {
         return true;
     }
     /**
-     * We do this shrinking when the number of inserted keys is less than or equal (the size of the hash table / 4)
-     * */
-    private void shrink(){
-        m >>= 1;
-        rehash();
-    }
-    /**
-     * removes the key from insertedKeys List
-     * */
-    private void remove(int key){
-        ArrayList<Integer> copy = new ArrayList<>();
-        for (Integer insertedKey : insertedKeys) {
-            if (insertedKey == key) continue;
-            copy.add(insertedKey);
-        }
-        insertedKeys = (ArrayList<Integer>) copy.clone();
-    }
-    /**
      * takes a key and deletes it from the hash table
      * */
     public boolean delete(int key){
         AbstractMap.SimpleEntry<Boolean, Integer> searcher = search(key);
         boolean searchFlag = searcher.getKey();
-        if(!searchFlag) return false;
+        if(!searchFlag)
+            return false;
+
         int searchIdx = searcher.getValue();
         n--;
-        remove(key);
-        if(m >= 8 * n){
-            shrink();
-        }
-        else{
-            hashTable.set(searchIdx, null);
-        }
+        deletedKeys.add(key);
+        hashTable.set(searchIdx, null);
         return true;
     }
     /**
