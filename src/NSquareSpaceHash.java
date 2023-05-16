@@ -7,10 +7,6 @@ public class NSquareSpaceHash {
     private int n = 0;
     //The size of the hash table
     private int m = 2;
-    //The inserted keys
-    private ArrayList<Integer> insertedKeys = new ArrayList<>();
-    //The deleted keys
-    private ArrayList<Integer> deletedKeys = new ArrayList<>();
     //The hash table
     private final ArrayList<Integer> hashTable = new ArrayList<>();
     //Array list of hash functions used in insertions (storing them for search purpose)
@@ -43,6 +39,12 @@ public class NSquareSpaceHash {
 //        }
 //        System.out.println("----------------------------------------");
 //        System.out.println("inserted keys : " + insertedKeys);
+    }
+    /**
+     * takes a string and convert it to an integer
+     * */
+    public int preHash(String s){
+        return Math.abs(s.hashCode());
     }
     /**
      * Log to the base 2
@@ -128,10 +130,10 @@ public class NSquareSpaceHash {
      * Rehashes the hash table according to the new m (hash table size)
      * */
     private void rehash(){
+        ArrayList<Integer> insertedKeys = new ArrayList<>(hashTable);
         hashFunctions.clear();
         resetHashTable();
         for (int key : insertedKeys){
-            if (deletedKeys.contains(key)) continue;
             updateTables(key);
         }
     }
@@ -139,7 +141,7 @@ public class NSquareSpaceHash {
      * We do this growing when the number of inserted keys is greater than the size of the hash table
      * */
     private void grow(){
-        int MAXVALUE = 100_000_000;
+        int MAXVALUE = 134_217_728; //MAX power of 2
         if(m > Math.sqrt(Integer.MAX_VALUE))
             m = MAXVALUE;
         else
@@ -147,32 +149,14 @@ public class NSquareSpaceHash {
         rehash();
     }
     /**
-     * Takes an array list of elements and a key to be deleted from this list and returns the list after deletion
-     * */
-    private ArrayList<Integer> remove(ArrayList<Integer> elements, int key){
-        ArrayList<Integer> copy = new ArrayList<>();
-        for (Integer element : elements) {
-            if (element == key) continue;
-            copy.add(element);
-        }
-        return (ArrayList<Integer>) copy.clone();
-    }
-    /**
      * takes a key and inserts it in the hash table
      * */
     public boolean insert(int key){
         if(this.search(key).getKey()) return false;
         n++;
-        if (deletedKeys.contains(key)) {
-            deletedKeys = remove(deletedKeys, key);
-            insertedKeys = remove(insertedKeys, key);
-        }
-        insertedKeys.add(key);
-        if(n > m){
+        updateTables(key);
+        if(n == m){
             grow();
-        }
-        else{
-            updateTables(key);
         }
         return true;
     }
@@ -187,7 +171,6 @@ public class NSquareSpaceHash {
 
         int searchIdx = searcher.getValue();
         n--;
-        deletedKeys.add(key);
         hashTable.set(searchIdx, null);
         return true;
     }
