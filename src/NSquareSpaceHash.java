@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class NSquareSpaceHash {
+    //MAX power of 2
+    int MAXVALUE = 500_000_000;
     //The number of inserted keys
     private int n = 0;
     //The size of the hash table
@@ -16,7 +18,6 @@ public class NSquareSpaceHash {
     }
     public NSquareSpaceHash(int initialCapacity){
         n = initialCapacity;
-        int MAXVALUE = 134_217_728; //MAX power of 2
         if(n > Math.sqrt(Integer.MAX_VALUE))
             m = MAXVALUE;
         else
@@ -150,7 +151,6 @@ public class NSquareSpaceHash {
      * We do this growing when the number of inserted keys is greater than the size of the hash table
      * */
     private void grow(){
-        int MAXVALUE = 134_217_728; //MAX power of 2
         if(m > Math.sqrt(Integer.MAX_VALUE))
             m = MAXVALUE;
         else
