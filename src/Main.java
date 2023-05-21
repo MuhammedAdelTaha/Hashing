@@ -1,42 +1,39 @@
 public class Main {
     public static void main(String[] args) {
         NSquareSpaceHash hash = new NSquareSpaceHash();
-        long start, end;
+//        long time = System.currentTimeMillis();
+//        for (int i = 0; i < 1000_000; i++){
+//            int num = (int)(Math.random() * (1 << 20));
+//            hash.insert(num);
+//        }
+//        System.out.println(System.currentTimeMillis() - time);
+//
+//        time = System.currentTimeMillis();
+//        for (int i = 0; i < 1000_000; i++){
+//            int num = (int)(Math.random() * (1 << 20));
+//            hash.search(num);
+//        }
+//        System.out.println(System.currentTimeMillis() - time);
 
-        start = System.currentTimeMillis();
-        for (int i = 0; i < 1000_000; i++){
-            hash.insert(i);
-        }
-        end = System.currentTimeMillis();
-        System.out.println("insert time = " + (end - start));
-        hash.print();
-
-        int count = 0;
-        start = System.currentTimeMillis();
-        for (int i = 0; i < 1000_000; i++){
-            if(hash.search(i).getKey()) count++;
-        }
-        end = System.currentTimeMillis();
-        System.out.println("search time = " + (end - start));
-        hash.print();
-        System.out.println("found : " + count);
-
-        count = 0;
-        start = System.currentTimeMillis();
-        for (int i = 0; i < 1000_000; i++){
-            if(hash.delete(i)) count++;
-        }
-        end = System.currentTimeMillis();
-        System.out.println("delete time = " + (end - start));
-        hash.print();
-        System.out.println("deleted : " + count);
-
-        start = System.currentTimeMillis();
-        for (int i = 0; i < 1000_000; i++){
-            hash.insert(i);
-        }
-        end = System.currentTimeMillis();
-        System.out.println("insert time = " + (end - start));
-        hash.print();
+//        hash.insert(hash.preHash("mohamed"));
+//        hash.insert(hash.preHash("mahmoud"));
+//        hash.insert(hash.preHash("adel"));
+//        System.out.println(hash.search(hash.preHash("mohamed")).getKey());
+//        System.out.println(hash.search(hash.preHash("mahmoud")).getKey());
+//        System.out.println(hash.search(hash.preHash("adel")).getKey());
+//        System.out.println(hash.search(hash.preHash("Mahmoud")).getKey());
+//        System.out.println(hash.search(hash.preHash("ayman")).getKey());
+//
+//        hash.delete(hash.preHash("mohamed"));
+//        System.out.println(hash.search(hash.preHash("mohamed")).getKey());
+//        System.out.println(hash.search(hash.preHash("mahmoud")).getKey());
+//        System.out.println(hash.search(hash.preHash("adel")).getKey());
+//
+//        hash.delete(hash.preHash("mohamed"));
+//        hash.delete(hash.preHash("mahmoud"));
+//        hash.delete(hash.preHash("adel"));
+//        System.out.println(hash.search(hash.preHash("mohamed")).getKey());
+//        System.out.println(hash.search(hash.preHash("mahmoud")).getKey());
+//        System.out.println(hash.search(hash.preHash("adel")).getKey());
     }
 }

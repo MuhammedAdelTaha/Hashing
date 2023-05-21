@@ -14,6 +14,15 @@ public class NSquareSpaceHash {
     public NSquareSpaceHash(){
         resetHashTable();
     }
+    public NSquareSpaceHash(int initialCapacity){
+        n = initialCapacity;
+        int MAXVALUE = 134_217_728; //MAX power of 2
+        if(n > Math.sqrt(Integer.MAX_VALUE))
+            m = MAXVALUE;
+        else
+            m = n * n;
+        resetHashTable();
+    }
 
     /**
      * For debugging
