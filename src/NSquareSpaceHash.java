@@ -1,10 +1,11 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class NSquareSpaceHash {
-    //MAX power of 2
-    int MAXVALUE = 500_000_000;
     //The number of inserted keys
     private int n = 0;
     //The size of the hash table
@@ -16,14 +17,6 @@ public class NSquareSpaceHash {
     public NSquareSpaceHash(){
         resetHashTable();
     }
-    public NSquareSpaceHash(int initialCapacity){
-        n = initialCapacity;
-        if(n > Math.sqrt(Integer.MAX_VALUE))
-            m = MAXVALUE;
-        else
-            m = n * n;
-        resetHashTable();
-    }
 
     /**
      * For debugging
@@ -33,22 +26,6 @@ public class NSquareSpaceHash {
         System.out.println("m = " + m);
         System.out.println("number of hash functions = " + hashFunctions.size());
         System.out.println("hash table size = " + hashTable.size());
-//        System.out.println("hash table : " + hashTable);
-//        System.out.println("hash functions : ");
-//        for (byte[][] hashFunction : hashFunctions){
-//            int s2 = hashFunction[0].length;
-//            for (byte[] bytes : hashFunction) {
-//                System.out.print('[');
-//                for (int j = 0; j < s2; j++) {
-//                    System.out.print(bytes[j]);
-//                    if (j != s2 - 1) System.out.print(' ');
-//                }
-//                System.out.println(']');
-//            }
-//            System.out.println("----------------------------------------");
-//        }
-//        System.out.println("----------------------------------------");
-//        System.out.println("inserted keys : " + insertedKeys);
     }
     /**
      * takes a string and convert it to an integer
@@ -151,7 +128,10 @@ public class NSquareSpaceHash {
      * We do this growing when the number of inserted keys is greater than the size of the hash table
      * */
     private void grow(){
-        if(m > Math.sqrt(Integer.MAX_VALUE))
+        //MAX power of 2
+        final int MAXVALUE = 200_000_000;
+        //Math.sqrt(MAXVALUE) = 22360
+        if(m > 22360)
             m = MAXVALUE;
         else
             m *= m;
