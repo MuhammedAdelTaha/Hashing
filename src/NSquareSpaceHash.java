@@ -1,28 +1,36 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class NSquareSpaceHash {
-    //The number of inserted keys
-    private int n = 0;
     //The size of the hash table
-    private int m = 2;
+    private final int m;
     //The hash table
     private final ArrayList<Integer> hashTable = new ArrayList<>();
     //Array list of hash functions used in insertions (storing them for search purpose)
     private final ArrayList<byte[][]> hashFunctions = new ArrayList<>();
-    public NSquareSpaceHash(){
-        resetHashTable();
+    public NSquareSpaceHash(int size){
+        if(size > 31622){
+            m = 1000_000_000;
+        }else{
+            m = size * size;
+        }
+        setHashTable();
     }
 
+    /**
+     * Set the initial values of the hash table to be null
+     * */
+    private void setHashTable(){
+        hashTable.clear();
+        for (int i = 0; i < m; i++){
+            hashTable.add(i, null);
+        }
+    }
     /**
      * For debugging
      * */
     public void print(){
-        System.out.println("n = " + n);
         System.out.println("m = " + m);
         System.out.println("number of hash functions = " + hashFunctions.size());
         System.out.println("hash table size = " + hashTable.size());
@@ -38,15 +46,6 @@ public class NSquareSpaceHash {
      * */
     private int lg(int num){
         return Integer.SIZE - Integer.numberOfLeadingZeros(num) - 1;
-    }
-    /**
-     * Set the initial values of the hash table to be null
-     * */
-    private void resetHashTable(){
-        hashTable.clear();
-        for (int i = 0; i < m; i++){
-            hashTable.add(i, null);
-        }
     }
     /**
      * Takes a randomly selected hash 2D 0/1 matrix h and the key to be inserted
@@ -114,39 +113,11 @@ public class NSquareSpaceHash {
         hashTable.set(function.getValue(), key);
     }
     /**
-     * Rehashes the hash table according to the new m (hash table size)
-     * */
-    private void rehash(){
-        ArrayList<Integer> insertedKeys = new ArrayList<>(hashTable);
-        hashFunctions.clear();
-        resetHashTable();
-        for (int key : insertedKeys){
-            updateTables(key);
-        }
-    }
-    /**
-     * We do this growing when the number of inserted keys is greater than the size of the hash table
-     * */
-    private void grow(){
-        //MAX power of 2
-        final int MAXVALUE = 200_000_000;
-        //Math.sqrt(MAXVALUE) = 22360
-        if(m > 22360)
-            m = MAXVALUE;
-        else
-            m *= m;
-        rehash();
-    }
-    /**
      * takes a key and inserts it in the hash table
      * */
     public boolean insert(int key){
         if(this.search(key).getKey()) return false;
-        n++;
         updateTables(key);
-        if(n == m){
-            grow();
-        }
         return true;
     }
     /**
@@ -159,7 +130,6 @@ public class NSquareSpaceHash {
             return false;
 
         int searchIdx = searcher.getValue();
-        n--;
         hashTable.set(searchIdx, null);
         return true;
     }

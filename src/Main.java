@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        NSquareSpaceHash hash = new NSquareSpaceHash();
+        NSquareSpaceHash hash = new NSquareSpaceHash(1000_000);
         long time = System.currentTimeMillis();
         for (int i = 0; i < 1000_000; i++){
             int num = (int)(Math.random() * (1 << 20));
