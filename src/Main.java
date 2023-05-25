@@ -41,6 +41,26 @@ public class Main {
         hash.batchInsert(nums);
         time = System.currentTimeMillis() - time;
 
+        hash.insert(n + 1);
+        hash.insert(n + 2);
+        hash.insert(n + 3);
+        hash.insert(n + 4);
+        hash.insert(n + 5);
+        hash.insert(n + 6);
+
+        hash.insert(n + 7);
+        hash.insert(n + 8);
+        hash.insert(n + 9);
+        hash.insert(n + 10);
+        hash.insert(n + 11);
+        hash.insert(n + 12);
+
         System.out.println(time);
+
+        int errcnt = 0;
+        for (int i = 0; i < m; i++)
+            if (!hash.search(i))
+                errcnt++;
+        System.out.println(errcnt);
     }
 }

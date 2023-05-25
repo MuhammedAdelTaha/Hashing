@@ -14,7 +14,7 @@ public class StaticNSpace {
 
     public StaticNSpace(int n) {
         this.n = n;
-        table = new int[n][];
+        table = new int[n][1];
         Arrays.fill(table, new int[1]);
         for (int i = 0; i < n; i++)
             Arrays.fill(table[i], BLANK);
@@ -78,7 +78,14 @@ public class StaticNSpace {
         count++;
 
         int i = hash(mainHash, value, n);
-        int j = hash(secondaryHashes[i], value, secondaryHashes[i].length);
+        int j = 0;
+
+        if (table[i].length == 1)
+            j = 0;
+        else if (table[i].length == 0)
+            table[i] = new int[1];
+        else
+            j = hash(secondaryHashes[i], value, table[i].length);
         
         if (table[i][j] != BLANK) {
             ArrayList<Integer> newSubTable = new ArrayList<>();
@@ -111,7 +118,12 @@ public class StaticNSpace {
         count--;
 
         int i = hash(mainHash, value, n);
-        int j = hash(secondaryHashes[i], value, secondaryHashes[i].length);
+        int j;
+
+        if (table[i].length == 1)
+            j = 0;
+        else
+            j = hash(secondaryHashes[i], value, table[i].length);
     
         table[i][j] = BLANK;
     
@@ -120,7 +132,15 @@ public class StaticNSpace {
     
     public boolean search(int value) {
         int i = hash(mainHash, value, n);
-        int j = hash(secondaryHashes[i], value, secondaryHashes[i].length);
+        int j = 0;
+
+        if (table[i].length == 0)
+            return false;
+        if (table[i].length == 1)
+            j = 0;
+        else
+            j = hash(secondaryHashes[i], value, table[i].length);
+
     
         if (table[i][j] == value)
             return true;
