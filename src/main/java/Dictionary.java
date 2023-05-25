@@ -2,6 +2,7 @@ package main.java;
 
 import main.java.Hashing.Hash;
 import main.java.Hashing.NSquareSpaceHash;
+import main.java.Hashing.StaticNSpace;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,13 +17,13 @@ public class Dictionary {
     public Hash hash;
     private final ArrayList<String> words = new ArrayList<>();
 
-    public Dictionary(String type){
+    public Dictionary(String type, int size){
         if(Objects.equals(type, "NSquare")){
             System.out.println(GREEN + "NSquare-Space based Dictionary..." + RESET);
-            hash = new NSquareSpaceHash();
+            hash = new NSquareSpaceHash(size);
         }else if(Objects.equals(type , "N")){
             System.out.println(GREEN + "N-Space based Dictionary..." + RESET);
-//            hashTable = new RedBlackTree< String >();
+            hash = new StaticNSpace(size);
         }
     }
 

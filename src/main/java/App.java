@@ -25,6 +25,7 @@ public class App {
         System.out.println("Welcome to out Dictionary");
 
         double type;
+        int size;
         while(true){
             System.out.println("Enter 1 for NSquare-Space Hash\n" + "Enter 2 for N-Space Hash");
             String typeStr = scanner.nextLine();
@@ -33,7 +34,15 @@ public class App {
                 if(type == 1 || type == 2)break;
             }
         }
-        Dictionary dictionary = new Dictionary(type == 1 ? "NSquare" : "N");
+        while(true){
+            System.out.println("Please, Enter the Dictionary size");
+            String sizeStr = scanner.nextLine();
+            if (isNumeric(sizeStr)) {
+                size = Integer.parseInt(sizeStr);
+                break;
+            }
+        }
+        Dictionary dictionary = new Dictionary(type == 1 ? "NSquare" : "N", size);
 
         while (true) {
             double op;

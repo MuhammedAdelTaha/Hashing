@@ -6,25 +6,32 @@ import java.util.Random;
 
 public class NSquareSpaceHash implements Hash{
     //The number of inserted keys
-    private int n = 0;
+    private int n;
     //The size of the hash table
-    private int m = 2;
+    private final int m;
     //The hash table
     private final ArrayList<Long> hashTable = new ArrayList<>();
     //Array list of hash functions used in insertions (storing them for search purpose)
     private final ArrayList<byte[][]> hashFunctions = new ArrayList<>();
-    public NSquareSpaceHash(){
-        resetHashTable();
+    public NSquareSpaceHash(int size){
+        //MAX power of 2
+        final int MAXVALUE = 100_000_000;
+        //Math.sqrt(MAXVALUE) = 10000
+        if(size >= 10000)
+            m = MAXVALUE;
+        else
+            m = size * size;
+        setHashTable();
     }
 
     /**
-     * For debugging
+     * Set the initial values of the hash table to be null
      * */
-    public void print(){
-        System.out.println("n = " + n);
-        System.out.println("m = " + m);
-        System.out.println("number of hash functions = " + hashFunctions.size());
-        System.out.println("hash table size = " + hashTable.size());
+    private void setHashTable(){
+        hashTable.clear();
+        for (int i = 0; i < m; i++){
+            hashTable.add(i, null);
+        }
     }
     /**
      * Return the hash table size
@@ -36,10 +43,10 @@ public class NSquareSpaceHash implements Hash{
      * takes a string and convert it to an integer
      * */
     public long preHash(String s){
-        long code = 0, p = 1, m = (long) Math.pow(2, 64);
-        for (int i = 0; i < s.length(); i++){
-            code = (code + s.charAt(i) * p) % m;
-            p *= 53;
+        long code = 0, p = 1;
+        for (int i = s.length() - 1; i >= 0; i--){
+            code += s.charAt(i) * p;
+            p *= 128;
         }
         return code;
     }
@@ -48,15 +55,6 @@ public class NSquareSpaceHash implements Hash{
      * */
     private int lg(long num){
         return Long.SIZE - Long.numberOfLeadingZeros(num) - 1;
-    }
-    /**
-     * Set the initial values of the hash table to be null
-     * */
-    private void resetHashTable(){
-        hashTable.clear();
-        for (int i = 0; i < m; i++){
-            hashTable.add(i, null);
-        }
     }
     /**
      * Takes a randomly selected hash 2D 0/1 matrix h and the key to be inserted
@@ -124,39 +122,12 @@ public class NSquareSpaceHash implements Hash{
         hashTable.set(function.getValue(), key);
     }
     /**
-     * Rehashes the hash table according to the new m (hash table size)
-     * */
-    private void rehash(){
-        ArrayList<Long> insertedKeys = new ArrayList<>(hashTable);
-        hashFunctions.clear();
-        resetHashTable();
-        for (long key : insertedKeys){
-            updateTables(key);
-        }
-    }
-    /**
-     * We do this growing when the number of inserted keys is greater than the size of the hash table
-     * */
-    private void grow(){
-        //MAX power of 2
-        final int MAXVALUE = 100_000_000;
-        //Math.sqrt(MAXVALUE) = 22360
-        if(m > 31622)
-            m = MAXVALUE;
-        else
-            m *= m;
-        rehash();
-    }
-    /**
      * takes a key and inserts it in the hash table
      * */
     public boolean insert(long key){
         if(this.search(key).getKey()) return false;
         n++;
         updateTables(key);
-        if(n == m){
-            grow();
-        }
         return true;
     }
     /**
