@@ -88,7 +88,7 @@ public class StaticNSpace implements Hash{
         count++;
 
         int i = hash(mainHash, value, n);
-        int j = hash(secondaryHashes[i], value, secondaryHashes[i].length);
+        int j = (table[i].length == 1) ? 0 : hash(secondaryHashes[i], value, secondaryHashes[i].length);
         
         if (table[i][j] != BLANK) {
             ArrayList<Long> newSubTable = new ArrayList<>();
@@ -118,10 +118,10 @@ public class StaticNSpace implements Hash{
         if (!search(value).getKey())
             return false;
     
-        count++;
+        count--;
 
         int i = hash(mainHash, value, n);
-        int j = hash(secondaryHashes[i], value, secondaryHashes[i].length);
+        int j = (table[i].length == 1) ? 0 : hash(secondaryHashes[i], value, secondaryHashes[i].length);
     
         table[i][j] = BLANK;
     
@@ -130,7 +130,7 @@ public class StaticNSpace implements Hash{
     
     public AbstractMap.SimpleEntry<Boolean, Integer> search(long value) {
         int i = hash(mainHash, value, n);
-        int j = hash(secondaryHashes[i], value, secondaryHashes[i].length);
+        int j = (table[i].length == 1) ? 0 : hash(secondaryHashes[i], value, secondaryHashes[i].length);
 
         return new AbstractMap.SimpleEntry<>(table[i][j] == value, null);
     }
