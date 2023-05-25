@@ -29,10 +29,11 @@ public class NSquareSpaceHash implements Hash{
      * */
     private void setHashTable(){
         hashTable.clear();
-        for (int i = 0; i < m; i++){
+        for (int i = 0; i < m; i++) {
             hashTable.add(i, null);
         }
     }
+
     /**
      * Return the hash table size
      * */
@@ -69,15 +70,15 @@ public class NSquareSpaceHash implements Hash{
         byte[] x = new byte[u];
 
         // fill the actual bit representation of the given key
-        for (int i = 0; i < u; i++){
+        for (int i = 0; i < u; i++) {
             x[i] = (byte) (binaryString.charAt(u - i - 1) - '0');
         }
 
         // calculate the hash index and return it
         int hx = 0;
-        for (int i = 0; i < b; i++){
+        for (int i = 0; i < b; i++) {
             int bit = 0;
-            for (int j = 0; j < u; j++){
+            for (int j = 0; j < u; j++) {
                 bit += h[i][j] * x[j];
             }
             bit %= 2;
@@ -85,6 +86,7 @@ public class NSquareSpaceHash implements Hash{
         }
         return hx;
     }
+
     /**
      * Takes a key and gets its appropriate hash function and index that gets a hash index that does not cause collision
      * */
@@ -104,15 +106,17 @@ public class NSquareSpaceHash implements Hash{
         } while (hashTable.get(hashIdx) != null);
         return new AbstractMap.SimpleEntry<>(h, hashIdx);
     }
+
     /**
      * Takes a key to be inserted and update tha hash table and tha array list of used hash functions accordingly
      * */
     private void updateTables(long key){
         int hashIdx;
-        for (byte[][] hashFunction : hashFunctions){
-            if(hashFunction[0].length != lg(key) + 1) continue;
+        for (byte[][] hashFunction : hashFunctions) {
+            if (hashFunction[0].length != lg(key) + 1)
+                continue;
             hashIdx = hash(hashFunction, key);
-            if (hashTable.get(hashIdx) == null){
+            if (hashTable.get(hashIdx) == null) {
                 hashTable.set(hashIdx, key);
                 return;
             }
@@ -121,6 +125,7 @@ public class NSquareSpaceHash implements Hash{
         hashFunctions.add(function.getKey());
         hashTable.set(function.getValue(), key);
     }
+
     /**
      * takes a key and inserts it in the hash table
      * */
@@ -130,13 +135,14 @@ public class NSquareSpaceHash implements Hash{
         updateTables(key);
         return true;
     }
+
     /**
      * takes a key and deletes it from the hash table
      * */
     public boolean delete(long key){
         AbstractMap.SimpleEntry<Boolean, Integer> searcher = search(key);
         boolean searchFlag = searcher.getKey();
-        if(!searchFlag)
+        if (!searchFlag)
             return false;
 
         int searchIdx = searcher.getValue();
@@ -144,6 +150,7 @@ public class NSquareSpaceHash implements Hash{
         hashTable.set(searchIdx, null);
         return true;
     }
+
     /**
      * Takes a key and return true if found and false if not
      * */
@@ -151,7 +158,7 @@ public class NSquareSpaceHash implements Hash{
         for (byte[][] hashFunction : hashFunctions){
             if(hashFunction[0].length != lg(key) + 1) continue;
             int hashIdx = hash(hashFunction, key);
-            if(hashTable.get(hashIdx) != null && hashTable.get(hashIdx) == key) {
+            if (hashTable.get(hashIdx) != null && hashTable.get(hashIdx) == key) {
                 return new AbstractMap.SimpleEntry<>(true, hashIdx);
             }
         }
