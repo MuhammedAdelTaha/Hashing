@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class StaticNSpace {
     int n;
-    long count = 0;
+    int count = 0;
     int[][] table;
     byte[][] mainHash;
     byte[][][] secondaryHashes;
@@ -19,6 +19,10 @@ public class StaticNSpace {
         for (int i = 0; i < n; i++)
             Arrays.fill(table[i], BLANK);
         secondaryHashes = new byte[n][][];
+    }
+
+    public int size() {
+        return count;
     }
 
     public int batchInsert(int[] values) {
@@ -62,6 +66,8 @@ public class StaticNSpace {
                 table[i][0] = newTable[i].get(0);
         }
 
+        count += successfullyInserted;
+
         return successfullyInserted;
     }
 
@@ -98,13 +104,11 @@ public class StaticNSpace {
         return true;
     }
 
-    
-
     public boolean delete(int value) {
         if (!search(value))
             return false;
     
-        count++;
+        count--;
 
         int i = hash(mainHash, value, n);
         int j = hash(secondaryHashes[i], value, secondaryHashes[i].length);
@@ -232,9 +236,5 @@ public class StaticNSpace {
         }
 
         return hash;
-    }
-
-    private int lg(int num) {
-        return Integer.SIZE - Integer.numberOfLeadingZeros(num) - 1;
     }
 }
