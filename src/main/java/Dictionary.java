@@ -1,8 +1,6 @@
-package main.java;
-
-import main.java.Hashing.Hash;
-import main.java.Hashing.NSquareSpaceHash;
-import main.java.Hashing.StaticNSpace;
+import Hashing.Hash;
+import Hashing.NSquareSpaceHash;
+import Hashing.StaticNSpace;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

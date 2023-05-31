@@ -9,8 +9,5 @@
         <module name="Hashing" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Hashing" target="19" />
-    </bytecodeTargetLevel>
   </component>
 </project>

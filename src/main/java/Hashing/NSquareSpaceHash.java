@@ -1,4 +1,4 @@
-package main.java.Hashing;
+package Hashing;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;

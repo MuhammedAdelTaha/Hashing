@@ -1,11 +1,11 @@
-package main.java.Hashing;
+package Hashing;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class StaticNSpace implements Hash{
+public class StaticNSpace implements Hash {
     int n;
     int count = 0;
     long[][] table;
