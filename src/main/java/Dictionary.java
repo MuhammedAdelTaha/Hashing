@@ -1,6 +1,5 @@
 import Hashing.Hash;
 import Hashing.NSquareSpaceHash;
-import Hashing.StaticNSpace;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -21,7 +20,7 @@ public class Dictionary {
             hash = new NSquareSpaceHash(size);
         }else if(Objects.equals(type , "N")){
             System.out.println(GREEN + "N-Space based Dictionary..." + RESET);
-            hash = new StaticNSpace(size);
+//            hash = new StaticNSpace(size);
         }
     }
 
