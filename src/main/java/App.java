@@ -61,18 +61,22 @@ public class App {
                 }
             }
 
+            int temp;
+            String str;
+            String[] strings;
+            ArrayList<String> arrayList;
             switch ((int) op) {
-                case 1:
+                case 1 -> {
                     System.out.println("Enter a Word");
-                    String str = scanner.nextLine();
-                    String[] strings = str.split(" ");
+                    str = scanner.nextLine();
+                    strings = str.split(" ");
                     while (check(strings)) {
                         str = scanner.nextLine();
                         strings = str.split(" ");
                     }
                     dictionary.insert(strings[0]);
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("What is the word you want to delete ?");
                     str = scanner.nextLine();
                     strings = str.split(" ");
@@ -81,8 +85,8 @@ public class App {
                         strings = str.split(" ");
                     }
                     dictionary.delete(strings[0]);
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     System.out.println("What is the word you want to search for ?");
                     str = scanner.nextLine();
                     strings = str.split(" ");
@@ -91,38 +95,37 @@ public class App {
                         strings = str.split(" ");
                     }
                     dictionary.search(strings[0]);
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.println("Enter file path");
                     str = scanner.nextLine();
-                    int temp = dictionary.hash.size();
-                    ArrayList<String> arrayList = dictionary.batchInsert(str);
+                    temp = dictionary.hash.size();
+                    arrayList = dictionary.batchInsert(str);
                     if (arrayList.size() == 0) {
-                        if(temp != dictionary.hash.size())
+                        if (temp != dictionary.hash.size())
                             System.out.println(GREEN + "All words inserted successfully" + RESET);
                     } else {
                         System.out.println(RED + arrayList.size() + " Words failed to be inserted" + RESET);
                         log(arrayList);
                     }
-                    break;
-                case 5:
+                }
+                case 5 -> {
                     System.out.println("Enter file path");
                     str = scanner.nextLine();
                     temp = dictionary.hash.size();
                     arrayList = dictionary.batchDelete(str);
                     if (arrayList.size() == 0) {
-                        if(temp != dictionary.hash.size())
+                        if (temp != dictionary.hash.size())
                             System.out.println(GREEN + "All words deleted successfully" + RESET);
                     } else {
                         System.out.println(RED + arrayList.size() + " Words failed to be deleted" + RESET);
                         log(arrayList);
                     }
-                    break;
-                case 6:
-                    dictionary.size();
-                    break;
-                case 7:
+                }
+                case 6 -> dictionary.size();
+                case 7 -> {
                     return;
+                }
             }
             System.out.print("\n");
         }
